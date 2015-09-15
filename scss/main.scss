@@ -1,5 +1,7 @@
+$bgColor: #000;
+
 body {
-  background-color: #000;
+  background-color: $bgColor;
   background-image: url(images/bg-black-zeros.png);
   color: #fff;
   font: 16px/1.4 sans-serif;
