@@ -6,11 +6,24 @@ var sourcemaps = require('gulp-sourcemaps');
 var jshint = require('gulp-jshint');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
+var GulpSSH = require('gulp-ssh');
+var autoprefixer = require('gulp-autoprefixer');
+
+var config = require('./gulp-config.json');
 
 // define the default task and add the watch task to it
 gulp.task('default', ['watch']);
 
-// gulp.task('default', ['build-css']);
+// configure the deployment task
+var gulpSSH = new GulpSSH({
+  ignoreErrors: false,
+  sshConfig: config
+});
+
+gulp.task('deploy', function () {
+  return gulp.src(['./**/*', '!**/node_modules/**', '!./*.js*', '!./scripts', '!./scss'])
+    .pipe(gulpSSH.dest('/home/lenaplaksina/public_html/cuba-cameras/'))
+})
 
 // configure the scss task
 gulp.task('build-css', function() {
@@ -22,6 +35,9 @@ gulp.task('build-css', function() {
           this.emit('end');
         })
       )
+      .pipe(autoprefixer({
+        browsers: ['last 2 versions', '> 2% in NZ', 'Explorer >= 9']  
+      }))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('css'))
     .pipe(notify("Css compiled!"));
