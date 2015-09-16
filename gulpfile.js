@@ -27,7 +27,10 @@ gulp.task('deploy', function () {
 
 // configure the scss task
 gulp.task('build-css', function() {
-  return gulp.src("scss/**/*.scss")
+  return gulp.src([
+      'bower_components/magnific-popup/dist/magnific-popup.css',
+      'scss/main.scss'
+    ])
     .pipe(sourcemaps.init())
       .pipe(sass()
         .on('error', function(err) {
@@ -38,6 +41,7 @@ gulp.task('build-css', function() {
       .pipe(autoprefixer({
         browsers: ['last 2 versions', '> 2% in NZ', 'Explorer >= 9']  
       }))
+      .pipe(concat('main.css'))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('css'))
     .pipe(notify("Css compiled!"));
@@ -53,7 +57,12 @@ gulp.task('jshint', function() {
 
 // configure the js concat task
 gulp.task('build-js', function() {
-  return gulp.src('scripts/**/*.js')
+  return gulp.src([
+      'bower_components/jquery/dist/jquery.min.js',
+      'bower_components/magnific-popup/dist/jquery.magnific-popup.min.js',
+      'scripts/**/*.js'
+
+    ])
     .pipe(sourcemaps.init())
       //only uglify if gulp is ran with '--type production'
       .pipe(gutil.env.type === 'production' ? uglify() : gutil.noop())

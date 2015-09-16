@@ -2,3 +2,4 @@ node_modules
 css
 js
 gulp-config.json
+bower_components
